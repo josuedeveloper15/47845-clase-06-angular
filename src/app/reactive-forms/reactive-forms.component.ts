@@ -5,6 +5,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { forbiddenName, noHomeroValidator } from '../utils/custom-validators';
 
 @Component({
   selector: 'app-reactive-forms',
@@ -14,10 +15,37 @@ import {
 export class ReactiveFormsComponent {
   userForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
-    this.userForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
+  myStepperForm: FormGroup;
 
+  constructor(private formBuilder: FormBuilder) {
+    this.myStepperForm = this.formBuilder.group({
+      // Paso 1
+      contact: this.formBuilder.group({
+        telefono: [],
+        email: [],
+        linkedin: [],
+      }),
+
+      // Paso 2
+      address: this.formBuilder.group({
+        locations: [],
+        state: [],
+        country: [],
+        zip: [],
+      }),
+
+      // Paso 3
+      facturacion: this.formBuilder.group({
+        cuit: [],
+        numeroDeSocio: [],
+      }),
+    });
+
+    this.userForm = this.formBuilder.group({
+      name: ['', [Validators.required, forbiddenName('josue')]],
+      // name: ['', [Validators.required, noHomeroValidator]],
+
+      email: ['', [Validators.required, Validators.email]],
       password: this.formBuilder.control(''),
     });
   }
